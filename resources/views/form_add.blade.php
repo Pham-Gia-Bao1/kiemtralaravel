@@ -9,8 +9,21 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+    form{
+    background-color: azure;
+    width: 50%;
+    margin: 0 auto;
+    padding: 30px;
+    margin-top: 30px;
+}
+h1{text-align: center}
+</style>
 </head>
+
+
 <body>
+    <h1>Create new producct</h1>
 
     <form action="{{route('new')}}" method="POST" enctype="multipart/form-data">
 
@@ -57,12 +70,28 @@
 
         <div class="form-group">
             <label for="img">Image</label>
-            <input type="file" class="form-control-file" id="main_img" name="img">
+            <input type="file" class="form-control-file" id="main_img" name="img" onchange="previewImage(event)">
             @if ($errors->has('img'))
                 <span class="text-danger">{{ $errors->first('img') }}</span>
             @endif
-            <img src="" alt="">
+            <img id="preview" src="" alt="Preview Image" style="display: none; width:300px">
         </div>
+
+        <script>
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+
+            reader.onload = function(){
+                var img = document.getElementById('preview');
+                img.src = reader.result;
+                img.style.display = 'block';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+        </script>
+
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
